@@ -15,6 +15,7 @@ sitemap.Add(new SitemapLocation
                     Url = url,
                     Images = images //optional
                 });
+sitemap.WriteSitemapToFile(path);              
 ```             
 
 #### Example Output
