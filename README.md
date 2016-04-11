@@ -3,7 +3,7 @@ Class to create google sitemaps dynamically. Supports images. If certain element
 
 ## USAGE
 
-Create instance of Sitemap class. Use `Add` method add urls.
+Create instance of Sitemap class. Use `Add` method add urls. Use `WriteSitemapToFile` to save sitemap to file.
 
 ### Example
 
