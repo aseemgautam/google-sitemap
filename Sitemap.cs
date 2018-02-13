@@ -1,14 +1,17 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
 
 namespace Utils.Sitemap
 {
     [XmlRoot("urlset", Namespace = "http://www.sitemaps.org/schemas/sitemap/0.9")]
-    public class Sitemap {
+    public class Sitemap
+    {
         private ArrayList map;
 
-        public Sitemap() {
+        public Sitemap()
+        {
             map = new ArrayList();
         }
 
@@ -25,14 +28,15 @@ namespace Utils.Sitemap
             {
                 if (value == null)
                     return;
-                SitemapLocation[] items = (SitemapLocation[]) value;
+                SitemapLocation[] items = (SitemapLocation[])value;
                 map.Clear();
                 foreach (SitemapLocation item in items)
                     map.Add(item);
             }
         }
 
-        public string GetSitemapXml() {
+        public string GetSitemapXml()
+        {
             return string.Empty;
         }
 
@@ -41,16 +45,38 @@ namespace Utils.Sitemap
             return map.Add(item);
         }
 
+        public void AddRange(IEnumerable<SitemapLocation> locs)
+        {
+            foreach (var i in locs)
+            {
+                map.Add(i);
+            }
+        }
 
-        public void WriteSitemapToFile(string path) {
+        public void WriteSitemapToFile(string path)
+        {
 
-            using (FileStream fs = new FileStream(path, FileMode.Create)) {
+            using (FileStream fs = new FileStream(path, FileMode.Create))
+            {
 
-                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();                
-                ns.Add("image", "http://www.google.com/schemas/sitemap-image/1.1");                
+                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                ns.Add("image", "http://www.google.com/schemas/sitemap-image/1.1");
 
                 XmlSerializer xs = new XmlSerializer(typeof(Sitemap));
                 xs.Serialize(fs, this, ns);
+            }
+        }
+
+        public string WriteSitemapToString()
+        {
+            using (StringWriter sw = new StringWriter())
+            {
+                XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                ns.Add("image", "http://www.google.com/schemas/sitemap-image/1.1");
+
+                XmlSerializer xs = new XmlSerializer(typeof(Sitemap));
+                xs.Serialize(sw, this, ns);
+                return sw.GetStringBuilder().ToString();
             }
         }
     }
